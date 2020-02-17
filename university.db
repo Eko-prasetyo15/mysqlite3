@@ -1,0 +1,5 @@
+create table university(
+    id integer,
+    nama varchar(20),
+    alamat varchar(32)
+);
