@@ -25,10 +25,10 @@ create table jurusan(
 
 create table dosen(
     id_dosen varchar(30) primary key,
-    nama varchar(30)
+    nama_dosen varchar(30)
 );
- insert into dosen(id_dosen,nama) values ('DS001','rubi');
- insert into dosen(id_dosen,nama) values ('DS002','Krina');
+ insert into dosen(id_dosen,nama_dosen) values ('DS001','rubi');
+ insert into dosen(id_dosen,nama_dosen) values ('DS002','Krina');
 
 
 create table matakuliah(
@@ -41,6 +41,16 @@ create table matakuliah(
  insert into matakuliah(id_matakuliah,nama) values ('MK003','C++',3);
  insert into matakuliah(id_matakuliah,nama) values ('MK004','javascript',2);
  insert into matakuliah(id_matakuliah,nama) values ('MK005','Phyton',3);
+
+ -- menambah value sks 
+
+UPDATE matakuliah SET sks = 3 WHERE id_matakuliah ="MK001";
+UPDATE matakuliah SET sks = 3 WHERE id_matakuliah ="MK002";
+UPDATE matakuliah SET sks = 3 WHERE id_matakuliah ="MK003";
+UPDATE matakuliah SET sks = 2 WHERE id_matakuliah ="MK004";
+UPDATE matakuliah SET sks = 3 WHERE Id_matakuliah ="MK005";
+UPDATE matakuliah SET sks = 3 WHERE Id_matakuliah ="MK006";
+
 
 
 create table kontrak (
@@ -62,7 +72,15 @@ create table kontrak (
  insert into kontrak (id,nilai,id_dosen,id_matakuliah,id_nim) values ('N007',9,'DS001','MK001','M001');
  insert into kontrak (id,nilai,id_dosen,id_matakuliah,id_nim) values ('N008',9,'DS001','MK006','M001');
  
- 
+ --  update nilai mahasiswa
+UPDATE kontrak SET nilai = 'A' WHERE ID ="N001";
+UPDATE kontrak SET nilai = 'B' WHERE ID ="N002";
+UPDATE kontrak SET nilai = 'A' WHERE ID ="N003";
+UPDATE kontrak SET nilai = 'C' WHERE ID ="N004";
+UPDATE kontrak SET nilai = 'D' WHERE ID ="N005";
+UPDATE kontrak SET nilai = 'B' WHERE ID ="N006";
+UPDATE kontrak SET nilai = 'A' WHERE ID ="N007";
+UPDATE kontrak SET nilai = 'A' WHERE ID ="N008";
 
 
 -- menampilkan table nama jurusan
@@ -90,15 +108,7 @@ WHERE
 -- menambah column baru 
 ALTER TABLE MAHASISWA ADD UMUR INTEGER;
  
---  update nilai mahasiswa
-UPDATE take SET nilai = 'A' WHERE ID ="N001";
-UPDATE take SET nilai = 'B' WHERE ID ="N002";
-UPDATE take SET nilai = 'A' WHERE ID ="N003";
-UPDATE take SET nilai = 'C' WHERE ID ="N004";
-UPDATE take SET nilai = 'D' WHERE ID ="N005";
-UPDATE take SET nilai = 'B' WHERE ID ="N006";
-UPDATE take SET nilai = 'A' WHERE ID ="N007";
-UPDATE take SET nilai = 'A' WHERE ID ="N008";
+
 
 -- menampilkan nilai di atas B
 SELECT 
@@ -111,15 +121,6 @@ FROM
    take
 WHERE
    nilai <= 'B'
-
--- menambah value sks 
-
-UPDATE matakuliah SET sks = 3 WHERE id_matakuliah ="MK001";
-UPDATE matakuliah SET sks = 3 WHERE id_matakuliah ="MK002";
-UPDATE matakuliah SET sks = 3 WHERE id_matakuliah ="MK003";
-UPDATE matakuliah SET sks = 2 WHERE id_matakuliah ="MK004";
-UPDATE matakuliah SET sks = 3 WHERE Id_matakuliah ="MK005";
-UPDATE matakuliah SET sks = 3 WHERE Id_matakuliah ="MK006";
 
 
 
@@ -144,3 +145,24 @@ FROM mahasiswa
 INNER JOIN kontrak ON mahasiswa.id_nim = kontrak.id_nim
 JOIN dosen ON kontrak.id_dosen = dosen.id_dosen
 GROUP BY dosen.id_dosen
+
+-- mengurutkan umur dari yang terbawah 
+SELECT * FROM mahasiswa
+ORDER BY umur asc;
+
+-- menampilkan seluruh tabel
+SELECT  mahasiswa.nama, umur, alamat, nilai, nama_dosen, matakuliah.nama, namajurusan
+FROM mahasiswa 
+JOIN jurusan ON mahasiswa.jurusan = jurusan.id_jurusan
+JOIN kontrak ON mahasiswa.id_nim = kontrak.id_nim
+JOIN matakuliah ON matakuliah.id_matakuliah = kontrak.id_matakuliah
+JOIN dosen ON dosen.id_dosen = kontrak.id_dosen
+
+-- menampilkan nilai dibawah C
+SELECT  mahasiswa.nama, umur, alamat, nilai, nama_dosen, matakuliah.nama, namajurusan
+FROM mahasiswa 
+JOIN jurusan ON mahasiswa.jurusan = jurusan.id_jurusan
+JOIN kontrak ON mahasiswa.id_nim = kontrak.id_nim
+JOIN matakuliah ON matakuliah.id_matakuliah = kontrak.id_matakuliah
+JOIN dosen ON dosen.id_dosen = kontrak.id_dosen
+WHERE kontrak.nilai > 'C';
