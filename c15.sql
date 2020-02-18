@@ -137,3 +137,10 @@ FROM kontrak
 JOIN mahasiswa ON kontrak.id_nim = mahasiswa.id_nim
 JOIN matakuliah ON kontrak.id_matakuliah = matakuliah.id_matakuliah
 WHERE matakuliah.nama = 'data mining';
+
+-- menampilkan jumlah mahasiswa pada setiap dosen
+SELECT kontrak.id_dosen,dosen.nama,count (mahasiswa.nama) total_mahasiswa
+FROM mahasiswa
+INNER JOIN kontrak ON mahasiswa.id_nim = kontrak.id_nim
+JOIN dosen ON kontrak.id_dosen = dosen.id_dosen
+GROUP BY dosen.id_dosen
