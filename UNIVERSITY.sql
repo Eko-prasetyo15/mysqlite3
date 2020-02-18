@@ -3,14 +3,15 @@ create table mahasiswa(
    nama varchar (40),
    alamat varchar (90),
    jurusan varchar (30), 
+   umur integer,
    foreign key (jurusan) references jurusan (id_jurusan)
 );
 
-insert into mahasiswa(id_nim,nama,alamat,jurusan) values ('M001', 'Eko', 'bandung', 'J001');
-insert into mahasiswa(id_nim,nama,alamat,jurusan) values ('M002', 'Yasa', 'bandung', 'J002');
-insert into mahasiswa(id_nim,nama,alamat,jurusan) values ('M003', 'Romi', 'bandung', 'J003');
-insert into mahasiswa(id_nim,nama,alamat,jurusan) values ('M004', 'Asep', 'bandung', 'J004');
-insert into mahasiswa(id_nim,nama,alamat,jurusan) values ('M005', 'Rajan', 'bandung', 'J002');
+insert into mahasiswa(id_nim,nama,alamat,jurusan,umur) values ('M001', 'Eko', 'bandung', 'J001',20);
+insert into mahasiswa(id_nim,nama,alamat,jurusan,umur) values ('M002', 'Yasa', 'bandung', 'J002',19);
+insert into mahasiswa(id_nim,nama,alamat,jurusan,umur) values ('M003', 'Romi', 'bandung', 'J003',18);
+insert into mahasiswa(id_nim,nama,alamat,jurusan,umur) values ('M004', 'Asep', 'bandung', 'J004',22);
+insert into mahasiswa(id_nim,nama,alamat,jurusan,umur) values ('M005', 'Rajan', 'bandung', 'J002',19);
 
 create table jurusan(
     id_jurusan varchar (30) primary key,
@@ -55,3 +56,47 @@ create table take(
  insert into take(id,nilai,id_dosen,id_matakuliah,id_nim) values ('N002',8,'DS001','MK004','0002');
  insert into take(id,nilai,id_dosen,id_matakuliah,id_nim) values ('N003',9,'DS002','MK002','0003');
  insert into take(id,nilai,id_dosen,id_matakuliah,id_nim) values ('N004',9,'DS001','MK001','0004');
+
+
+-- menampilkan table nama jurusan
+SELECT 
+   id_nim,
+   nama,
+   alamat,
+   namajurusan
+FROM
+   mahasiswa , jurusan
+WHERE
+   mahasiswa.jurusan = jurusan.id_jurusan;
+
+-- menampilkan data umur di bawah 20th
+SELECT 
+   id_nim,
+   nama,
+   alamat,
+   jurusan
+FROM
+   mahasiswa
+WHERE
+   umur < 20
+
+-- menambah column baru 
+ALTER TABLE MAHASISWA ADD UMUR INTEGER;
+ 
+--  update nilai mahasiswa
+UPDATE take SET nilai = 'A' WHERE ID ="N001";
+UPDATE take SET nilai = 'B' WHERE ID ="N002";
+UPDATE take SET nilai = 'A' WHERE ID ="N003";
+UPDATE take SET nilai = 'C' WHERE ID ="N004";
+
+-- menampilkan nilai di atas B
+SELECT 
+   id,
+   nilai,
+   id_dosen,
+   id_matakuliah,
+   id_nim
+FROM
+   take
+WHERE
+   nilai >= 'B'
