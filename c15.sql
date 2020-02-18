@@ -33,16 +33,17 @@ create table dosen(
 
 create table matakuliah(
     id_matakuliah varchar (30) primary key,
-    nama varchar (40)
+    nama varchar (40),
+    sks integer
 );
- insert into matakuliah(id_matakuliah,nama) values ('MK001','HTML');
- insert into matakuliah(id_matakuliah,nama) values ('MK002','PHP');
- insert into matakuliah(id_matakuliah,nama) values ('MK003','C++');
- insert into matakuliah(id_matakuliah,nama) values ('MK004','javascript');
- insert into matakuliah(id_matakuliah,nama) values ('MK005','Phyton');
+ insert into matakuliah(id_matakuliah,nama) values ('MK001','HTML',3);
+ insert into matakuliah(id_matakuliah,nama) values ('MK002','PHP',3);
+ insert into matakuliah(id_matakuliah,nama) values ('MK003','C++',3);
+ insert into matakuliah(id_matakuliah,nama) values ('MK004','javascript',2);
+ insert into matakuliah(id_matakuliah,nama) values ('MK005','Phyton',3);
 
 
-create table take(
+create table kontrak (
     id varchar (30) primary key,
     nilai integer,
     id_dosen varchar (30),
@@ -52,10 +53,16 @@ create table take(
     foreign key (id_matakuliah) references matakuliah (id_matakuliah),
     foreign key (id_nim) references mahasiswa (id_nim)
 );
- insert into take(id,nilai,id_dosen,id_matakuliah,id_nim) values ('N001',9,'DS002','MK003','0001');
- insert into take(id,nilai,id_dosen,id_matakuliah,id_nim) values ('N002',8,'DS001','MK004','0002');
- insert into take(id,nilai,id_dosen,id_matakuliah,id_nim) values ('N003',9,'DS002','MK002','0003');
- insert into take(id,nilai,id_dosen,id_matakuliah,id_nim) values ('N004',9,'DS001','MK001','0004');
+ insert into kontrak (id,nilai,id_dosen,id_matakuliah,id_nim) values ('N001',9,'DS002','MK003','M001');
+ insert into kontrak (id,nilai,id_dosen,id_matakuliah,id_nim) values ('N002',8,'DS001','MK004','M002');
+ insert into kontrak (id,nilai,id_dosen,id_matakuliah,id_nim) values ('N003',9,'DS002','MK002','M003');
+ insert into kontrak (id,nilai,id_dosen,id_matakuliah,id_nim) values ('N004',9,'DS001','MK001','M004');
+ insert into kontrak (id,nilai,id_dosen,id_matakuliah,id_nim) values ('N005',8,'DS001','MK004','M001');
+ insert into kontrak (id,nilai,id_dosen,id_matakuliah,id_nim) values ('N006',9,'DS002','MK002','M001');
+ insert into kontrak (id,nilai,id_dosen,id_matakuliah,id_nim) values ('N007',9,'DS001','MK001','M001');
+ insert into kontrak (id,nilai,id_dosen,id_matakuliah,id_nim) values ('N008',9,'DS001','MK006','M001');
+ 
+ 
 
 
 -- menampilkan table nama jurusan
@@ -88,6 +95,10 @@ UPDATE take SET nilai = 'A' WHERE ID ="N001";
 UPDATE take SET nilai = 'B' WHERE ID ="N002";
 UPDATE take SET nilai = 'A' WHERE ID ="N003";
 UPDATE take SET nilai = 'C' WHERE ID ="N004";
+UPDATE take SET nilai = 'D' WHERE ID ="N005";
+UPDATE take SET nilai = 'B' WHERE ID ="N006";
+UPDATE take SET nilai = 'A' WHERE ID ="N007";
+UPDATE take SET nilai = 'A' WHERE ID ="N008";
 
 -- menampilkan nilai di atas B
 SELECT 
@@ -105,7 +116,24 @@ WHERE
 
 UPDATE matakuliah SET sks = 3 WHERE id_matakuliah ="MK001";
 UPDATE matakuliah SET sks = 3 WHERE id_matakuliah ="MK002";
-UPDATE matakuliah SET sks = 2 WHERE id_matakuliah ="MK003";
+UPDATE matakuliah SET sks = 3 WHERE id_matakuliah ="MK003";
 UPDATE matakuliah SET sks = 2 WHERE id_matakuliah ="MK004";
 UPDATE matakuliah SET sks = 3 WHERE Id_matakuliah ="MK005";
 UPDATE matakuliah SET sks = 3 WHERE Id_matakuliah ="MK006";
+
+
+
+-- menggabungkan table kontrak, matakuliah, mahasiswa & mencari mahasiswa yang memiliki lebih dari 10sks
+SELECT id, nilai, mahasiswa.nama,matakuliah.nama, SUM(sks)
+FROM kontrak 
+INNER JOIN mahasiswa ON kontrak.id_nim = mahasiswa.id_nim
+JOIN matakuliah ON kontrak.id_matakuliah = matakuliah.id_matakuliah
+GROUP BY mahasiswa.nama 
+having sum(sks) > 10;
+
+-- mencari mahasiswa yang mengambil data mining
+SELECT kontrak.id, kontrak.nilai, mahasiswa.nama,matakuliah.nama
+FROM kontrak 
+JOIN mahasiswa ON kontrak.id_nim = mahasiswa.id_nim
+JOIN matakuliah ON kontrak.id_matakuliah = matakuliah.id_matakuliah
+WHERE matakuliah.nama = 'data mining';
